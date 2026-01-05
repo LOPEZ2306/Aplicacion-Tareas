@@ -1,11 +1,13 @@
 package com.hexagonal.tasks.domain.models;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Task {
     private long id;
     private String title;
     private String description;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDateTime creationDate;
     private boolean completed;
 
