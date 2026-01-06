@@ -26,21 +26,45 @@ public class JpaTaskRepositoryAdapter implements TaskRepositoryPort {
 
     @Override
     public Optional<Task> findById(Long id) {
-        return Optional.empty();
+        return jpaTaskRepository.findById(id)
+                .filter(TaskEntity::isActive)
+                .map(TaskEntity::todomainModel);
     }
 
     @Override
     public List<Task> findAll() {
-        return List.of();
+        return jpaTaskRepository.findByActiveTrue().stream()
+                .map(TaskEntity::todomainModel)
+                .toList();
     }
 
     @Override
     public Optional<Task> update(Task task) {
+        if (jpaTaskRepository.existsById(task.getId())) {
+            // We ensure we are not updating a deleted task implicitly,
+            // although usually the use case retrieves it first.
+            // But to be safe and consistent with Hexagonal, we just save what comes from
+            // domain.
+            // If domain says active=true, it stays active.
+            // However, strictly speaking, if it was soft deleted, we might want to prevent
+            // updates.
+            // For now, simple save.
+            TaskEntity taskEntity = TaskEntity.fromDomainModel(task);
+            TaskEntity savedTaskEntity = jpaTaskRepository.save(taskEntity);
+            return Optional.of(savedTaskEntity.todomainModel());
+        }
         return Optional.empty();
     }
 
     @Override
     public boolean deleteById(Long id) {
-        return false;
+        return jpaTaskRepository.findById(id)
+                .filter(TaskEntity::isActive)
+                .map(entity -> {
+                    entity.setActive(false);
+                    jpaTaskRepository.save(entity);
+                    return true;
+                })
+                .orElse(false);
     }
 }

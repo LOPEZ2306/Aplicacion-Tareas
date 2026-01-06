@@ -1,6 +1,5 @@
 package com.hexagonal.tasks.infrastructure.entities;
 
-
 import com.hexagonal.tasks.domain.models.Task;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,27 +17,31 @@ public class TaskEntity {
     private String description;
     private LocalDateTime creationdate;
     private boolean completed;
+    private boolean active;
 
-    public TaskEntity(){
+    public TaskEntity() {
 
     }
 
-    public TaskEntity(Long id, String title,String description, LocalDateTime creationdate, boolean completed){
+    public TaskEntity(Long id, String title, String description, LocalDateTime creationdate, boolean completed,
+            boolean active) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.creationdate = creationdate;
         this.completed = completed;
+        this.active = active;
     }
 
-    //Se puede sustituir por un mapper
+    // Se puede sustituir por un mapper
 
-    public static TaskEntity fromDomainModel(Task task){
-        return new TaskEntity(task.getId(), task.getTitle(), task.getDescription(), task.getCreationDate(), task.isCompleted());
+    public static TaskEntity fromDomainModel(Task task) {
+        return new TaskEntity(task.getId(), task.getTitle(), task.getDescription(), task.getCreationDate(),
+                task.isCompleted(), task.isActive());
     }
 
-    public Task todomainModel(){
-        return new Task(id, title, description, creationdate, completed);
+    public Task todomainModel() {
+        return new Task(id, title, description, creationdate, completed, active);
     }
 
     public long getId() {
@@ -79,5 +82,13 @@ public class TaskEntity {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
