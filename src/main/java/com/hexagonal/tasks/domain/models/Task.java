@@ -10,6 +10,7 @@ public class Task {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDateTime creationDate;
     private boolean completed;
+    private boolean active;
 
     public Task(Long id, String title, String description, LocalDateTime creationDate, boolean completed) {
         this.id = id;
@@ -17,6 +18,17 @@ public class Task {
         this.description = description;
         this.creationDate = creationDate;
         this.completed = completed;
+        this.active = true; // Default to true
+    }
+
+    public Task(Long id, String title, String description, LocalDateTime creationDate, boolean completed,
+            boolean active) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.creationDate = creationDate;
+        this.completed = completed;
+        this.active = active;
     }
 
     public long getId() {
@@ -57,5 +69,13 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
