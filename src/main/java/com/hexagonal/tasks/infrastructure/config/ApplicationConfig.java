@@ -10,7 +10,6 @@ import com.hexagonal.tasks.domain.ports.in.GetAdditionalTaskUseCase;
 import com.hexagonal.tasks.domain.ports.out.ExternalServicePort;
 import com.hexagonal.tasks.domain.ports.out.TaskRepositoryPort;
 import com.hexagonal.tasks.infrastructure.adapters.ExternalServiceAdapter;
-import com.hexagonal.tasks.infrastructure.repositories.JpaTaskRepository;
 import com.hexagonal.tasks.infrastructure.repositories.JpaTaskRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,6 +62,36 @@ public class ApplicationConfig {
     public com.hexagonal.tasks.domain.ports.out.UserRepositoryPort userRepositoryPort(
             com.hexagonal.tasks.infrastructure.repositories.JpaUserRepositoryAdapter jpaUserRepositoryAdapter) {
         return jpaUserRepositoryAdapter;
+    }
+
+    @Bean
+    public com.hexagonal.tasks.domain.ports.in.AuthenticateUserUseCase authenticateUserUseCase(
+            com.hexagonal.tasks.domain.ports.out.UserRepositoryPort userRepositoryPort,
+            com.hexagonal.tasks.domain.ports.out.PasswordEncoderPort passwordEncoderPort,
+            com.hexagonal.tasks.infrastructure.security.JwtTokenProvider jwtTokenProvider,
+            com.hexagonal.tasks.domain.ports.out.RefreshTokenRepositoryPort refreshTokenRepositoryPort) {
+        return new com.hexagonal.tasks.application.usecases.AuthenticateUserUseCaseImpl(
+                userRepositoryPort,
+                passwordEncoderPort,
+                jwtTokenProvider,
+                refreshTokenRepositoryPort);
+    }
+
+    @Bean
+    public com.hexagonal.tasks.domain.ports.in.RefreshTokenUseCase refreshTokenUseCase(
+            com.hexagonal.tasks.domain.ports.out.RefreshTokenRepositoryPort refreshTokenRepositoryPort,
+            com.hexagonal.tasks.domain.ports.out.UserRepositoryPort userRepositoryPort,
+            com.hexagonal.tasks.infrastructure.security.JwtTokenProvider jwtTokenProvider) {
+        return new com.hexagonal.tasks.application.usecases.RefreshTokenUseCaseImpl(
+                refreshTokenRepositoryPort,
+                userRepositoryPort,
+                jwtTokenProvider);
+    }
+
+    @Bean
+    public com.hexagonal.tasks.domain.ports.out.RefreshTokenRepositoryPort refreshTokenRepositoryPort(
+            com.hexagonal.tasks.infrastructure.repositories.JpaRefreshTokenRepositoryAdapter jpaRefreshTokenRepositoryAdapter) {
+        return jpaRefreshTokenRepositoryAdapter;
     }
 
 }
