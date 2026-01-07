@@ -46,10 +46,17 @@ public class ApplicationConfig {
 
     @Bean
     public com.hexagonal.tasks.application.services.UserService userService(
-            com.hexagonal.tasks.domain.ports.out.UserRepositoryPort userRepositoryPort) {
+            com.hexagonal.tasks.domain.ports.out.UserRepositoryPort userRepositoryPort,
+            com.hexagonal.tasks.domain.ports.out.PasswordEncoderPort passwordEncoderPort) {
         return new com.hexagonal.tasks.application.services.UserService(
-                new com.hexagonal.tasks.application.usecases.CreateUserUseCaseImpl(userRepositoryPort),
+                new com.hexagonal.tasks.application.usecases.CreateUserUseCaseImpl(userRepositoryPort,
+                        passwordEncoderPort),
                 new com.hexagonal.tasks.application.usecases.RetrieveUserUseCaseImpl(userRepositoryPort));
+    }
+
+    @Bean
+    public com.hexagonal.tasks.domain.ports.out.PasswordEncoderPort passwordEncoderPort() {
+        return new com.hexagonal.tasks.infrastructure.adapters.BCryptPasswordEncoderAdapter();
     }
 
     @Bean
