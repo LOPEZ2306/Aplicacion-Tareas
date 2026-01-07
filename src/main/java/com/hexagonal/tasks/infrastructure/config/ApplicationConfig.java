@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ApplicationConfing {
+public class ApplicationConfig {
 
     @Bean
     public TaskService taskService(TaskRepositoryPort taskRepositoryPort,
@@ -40,8 +40,22 @@ public class ApplicationConfing {
     }
 
     @Bean
-    public ExternalServiceAdapter externalServiceAdapter(){
+    public ExternalServiceAdapter externalServiceAdapter() {
         return new ExternalServiceAdapter();
+    }
+
+    @Bean
+    public com.hexagonal.tasks.application.services.UserService userService(
+            com.hexagonal.tasks.domain.ports.out.UserRepositoryPort userRepositoryPort) {
+        return new com.hexagonal.tasks.application.services.UserService(
+                new com.hexagonal.tasks.application.usecases.CreateUserUseCaseImpl(userRepositoryPort),
+                new com.hexagonal.tasks.application.usecases.RetrieveUserUseCaseImpl(userRepositoryPort));
+    }
+
+    @Bean
+    public com.hexagonal.tasks.domain.ports.out.UserRepositoryPort userRepositoryPort(
+            com.hexagonal.tasks.infrastructure.repositories.JpaUserRepositoryAdapter jpaUserRepositoryAdapter) {
+        return jpaUserRepositoryAdapter;
     }
 
 }
