@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>checkAuth('ADMIN');</script>
+</head>
+
+<body>
+
+    <nav>
+        <h1>Admin Panel</h1>
+        <button onclick="logout()">Logout</button>
+    </nav>
+
+    <section class="card">
+        <h2>Users</h2>
+        <ul id="usersList"></ul>
+    </section>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
