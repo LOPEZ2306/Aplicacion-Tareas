@@ -12,6 +12,10 @@ public class Task {
     private boolean completed;
     private boolean active;
 
+    public Task() {
+        this.active = true;
+    }
+
     public Task(Long id, String title, String description, LocalDateTime creationDate, boolean completed) {
         this.id = id;
         this.title = title;

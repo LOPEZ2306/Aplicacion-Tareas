@@ -32,27 +32,28 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity <List<Task>> getAllTasks(){
+    public ResponseEntity<List<Task>> getAllTasks() {
         List<Task> tasks = taskService.getAllTask();
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-    @PutMapping("/{taksId}")
-    public ResponseEntity<Task> updateTak(@PathVariable Long taskId, @RequestBody Task updateTask){
-        return taskService.updateTask(taskId, updateTask).map(task -> new ResponseEntity<>(task, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @PutMapping("/{taskId}")
+    public ResponseEntity<Task> updateTak(@PathVariable Long taskId, @RequestBody Task updateTask) {
+        return taskService.updateTask(taskId, updateTask).map(task -> new ResponseEntity<>(task, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{taskId}")
-    public ResponseEntity<Void> deleteTaskById(@PathVariable Long taskId){
-        if(taskService.deleteTask(taskId)){
+    public ResponseEntity<Void> deleteTaskById(@PathVariable Long taskId) {
+        if (taskService.deleteTask(taskId)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/{taskId}/aditionalInfo")
-    public ResponseEntity<AdditionalTaskInfo> getAdditionalTaskInfo(@PathVariable Long taskId){
+    public ResponseEntity<AdditionalTaskInfo> getAdditionalTaskInfo(@PathVariable Long taskId) {
         AdditionalTaskInfo additionalTaskInfo = taskService.getAdditionalTaskInfo(taskId);
         return new ResponseEntity<>(additionalTaskInfo, HttpStatus.OK);
     }

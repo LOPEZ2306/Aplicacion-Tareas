@@ -10,47 +10,55 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- * Security Configuration
- * Configures Spring Security with JWT authentication
- * All security rules are explicitly defined here for maximum control
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
+        public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // Disable CSRF as we're using JWT (stateless)
-                .csrf(AbstractHttpConfigurer::disable)
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                // JWT = stateless
+                                .csrf(AbstractHttpConfigurer::disable)
 
-                // Configure authorization rules
-                .authorizeHttpRequests(auth -> auth
-                        // Public endpoints - no authentication required
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Allow user registration
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                        // Protected endpoints - authentication required
-                        .requestMatchers("/api/tasks/**").authenticated()
-                        .requestMatchers("/api/users/**").authenticated()
+                                .authorizeHttpRequests(auth -> auth
+                                                // Públicos
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/index.html",
+                                                                "/login.html",
+                                                                "/register.html",
+                                                                "/user.html",
+                                                                "/admin.html",
+                                                                "/favicon.ico",
+                                                                "/error")
+                                                .permitAll()
 
-                        // Any other request requires authentication
-                        .anyRequest().authenticated())
+                                                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                                                .requestMatchers("/auth/**").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
 
-                // Configure session management as STATELESS (no sessions, JWT only)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                                // PROTEGIDOS
+                                                .requestMatchers("/api/tasks", "/api/tasks/**")
+                                                .hasAnyRole("USER", "ADMIN")
 
-                // Add JWT filter before UsernamePasswordAuthenticationFilter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                                                .requestMatchers("/api/users", "/api/users/**")
+                                                .hasRole("ADMIN")
 
-        return http.build();
-    }
+                                                // Todo lo demás
+                                                .anyRequest().authenticated())
+
+                                // JWT Filter
+                                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+                return http.build();
+        }
 }
