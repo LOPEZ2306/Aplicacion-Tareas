@@ -9,12 +9,12 @@ public interface TaskRepositoryPort {
 
     Task save(Task task);
 
-    Optional<Task>findById(Long id);
+    Optional<Task> findById(Long id);
 
-    List<Task>findAll();
+    List<Task> findAllByUserId(Long userId);
 
-    Optional<Task>update(Task task);
+    Optional<Task> update(Task task);
 
-    boolean deleteById (Long id);
+    boolean deleteById(Long id);
 
 }

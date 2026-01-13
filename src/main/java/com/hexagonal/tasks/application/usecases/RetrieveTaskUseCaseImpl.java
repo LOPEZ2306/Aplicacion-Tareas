@@ -16,13 +16,14 @@ public class RetrieveTaskUseCaseImpl implements RetrieveTaskUseCase {
     }
 
     @Override
-    public Optional<Task> getTask(Long id) {
-        return taskRepositoryPort.findById(id);
+    public Optional<Task> getTask(Long id, Long userId) {
+        return taskRepositoryPort.findById(id)
+                .filter(task -> task.getUserId() == null || task.getUserId().equals(userId));
     }
 
     @Override
-    public List<Task> getAllTask() {
-        return taskRepositoryPort.findAll();
+    public List<Task> getAllTasksForUser(Long userId) {
+        return taskRepositoryPort.findAllByUserId(userId);
     }
 
 }

@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface JpaTaskRepository extends org.springframework.data.jpa.repository.JpaRepository<TaskEntity, Long> {
     List<TaskEntity> findByActiveTrue();
+
+    List<TaskEntity> findByUserIdAndActiveTrue(Long userId);
 }

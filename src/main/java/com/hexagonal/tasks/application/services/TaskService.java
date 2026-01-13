@@ -36,27 +36,27 @@ public class TaskService implements CreateTaskUseCase, RetrieveTaskUseCase, Upda
     }
 
     @Override
-    public boolean deleteTask(Long id) {
-        return deleteTaskUseCase.deleteTask(id);
+    public boolean deleteTask(Long id, Long userId) {
+        return deleteTaskUseCase.deleteTask(id, userId);
     }
 
     @Override
-    public AdditionalTaskInfo getAdditionalTaskInfo(Long id) {
-        return getAdditionalTaskUseCase.getAdditionalTaskInfo(id);
+    public AdditionalTaskInfo getAdditionalTaskInfo(Long id, Long userId) {
+        return getAdditionalTaskUseCase.getAdditionalTaskInfo(id, userId);
     }
 
     @Override
-    public Optional<Task> getTask(Long id) {
-        return retrieveTaskUseCase.getTask(id);
+    public Optional<Task> getTask(Long id, Long userId) {
+        return retrieveTaskUseCase.getTask(id, userId);
     }
 
     @Override
-    public List<Task> getAllTask() {
-        return retrieveTaskUseCase.getAllTask();
+    public List<Task> getAllTasksForUser(Long userId) {
+        return retrieveTaskUseCase.getAllTasksForUser(userId);
     }
 
     @Override
-    public Optional<Task> updateTask(long id, Task updateTask) {
-        return updateTaskUseCase.updateTask(id, updateTask);
+    public Optional<Task> updateTask(long id, Task updateTask, Long userId) {
+        return updateTaskUseCase.updateTask(id, updateTask, userId);
     }
 }
