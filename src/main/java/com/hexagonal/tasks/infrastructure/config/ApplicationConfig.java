@@ -34,8 +34,9 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public GetAdditionalTaskUseCase getAdditionalTaskUseCase(ExternalServicePort externalServicePort) {
-        return new GetAdditionalTaskUseCaseImpl(externalServicePort);
+    public GetAdditionalTaskUseCase getAdditionalTaskUseCase(ExternalServicePort externalServicePort,
+            TaskRepositoryPort taskRepositoryPort) {
+        return new GetAdditionalTaskUseCaseImpl(externalServicePort, taskRepositoryPort);
     }
 
     @Bean
@@ -50,7 +51,10 @@ public class ApplicationConfig {
         return new com.hexagonal.tasks.application.services.UserService(
                 new com.hexagonal.tasks.application.usecases.CreateUserUseCaseImpl(userRepositoryPort,
                         passwordEncoderPort),
-                new com.hexagonal.tasks.application.usecases.RetrieveUserUseCaseImpl(userRepositoryPort));
+                new com.hexagonal.tasks.application.usecases.RetrieveUserUseCaseImpl(userRepositoryPort),
+                new com.hexagonal.tasks.application.usecases.UpdateUserUseCaseImpl(userRepositoryPort,
+                        passwordEncoderPort),
+                new com.hexagonal.tasks.application.usecases.DeleteUserUseCaseImpl(userRepositoryPort));
     }
 
     @Bean
