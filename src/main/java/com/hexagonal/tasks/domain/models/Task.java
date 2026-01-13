@@ -1,38 +1,52 @@
 package com.hexagonal.tasks.domain.models;
 
-import java.time.LocalDateTime;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Task {
+    @JsonProperty("id")
     private long id;
+
+    @JsonProperty("title")
     private String title;
+
+    @JsonProperty("description")
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDateTime creationDate;
+
+    @JsonProperty("creationDate")
+    private String creationDate; // Using String for maximum reliability
+
+    @JsonProperty("completed")
     private boolean completed;
+
+    @JsonProperty("active")
     private boolean active;
+
+    @JsonProperty("userId")
+    private Long userId;
 
     public Task() {
         this.active = true;
     }
 
-    public Task(Long id, String title, String description, LocalDateTime creationDate, boolean completed) {
+    public Task(Long id, String title, String description, String creationDate, boolean completed, Long userId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
         this.completed = completed;
-        this.active = true; // Default to true
+        this.active = true;
+        this.userId = userId;
     }
 
-    public Task(Long id, String title, String description, LocalDateTime creationDate, boolean completed,
-            boolean active) {
+    public Task(Long id, String title, String description, String creationDate, boolean completed,
+            boolean active, Long userId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
         this.completed = completed;
         this.active = active;
+        this.userId = userId;
     }
 
     public long getId() {
@@ -59,11 +73,11 @@ public class Task {
         this.description = description;
     }
 
-    public LocalDateTime getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -81,5 +95,13 @@ public class Task {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

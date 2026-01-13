@@ -14,7 +14,8 @@ public class CreateTaskUseCaseImpl implements CreateTaskUseCase {
 
     @Override
     public Task createTask(Task task) {
-        task.setCreationDate(java.time.LocalDateTime.now());
+        task.setCreationDate(
+                java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         task.setActive(true);
         return taskRepositoryPort.save(task);
     }

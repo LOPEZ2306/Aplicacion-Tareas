@@ -32,8 +32,8 @@ public class JpaTaskRepositoryAdapter implements TaskRepositoryPort {
     }
 
     @Override
-    public List<Task> findAll() {
-        return jpaTaskRepository.findByActiveTrue().stream()
+    public List<Task> findAllByUserId(Long userId) {
+        return jpaTaskRepository.findByUserIdAndActiveTrue(userId).stream()
                 .map(TaskEntity::todomainModel)
                 .toList();
     }
