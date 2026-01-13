@@ -20,6 +20,9 @@ function request(url, method, body) {
             const text = await res.text();
             throw new Error(`HTTP ${res.status}: ${text}`);
         }
-        return res.json();
+
+        // Handle empty responses (like 204 NO CONTENT)
+        const text = await res.text();
+        return text ? JSON.parse(text) : {};
     });
 }
