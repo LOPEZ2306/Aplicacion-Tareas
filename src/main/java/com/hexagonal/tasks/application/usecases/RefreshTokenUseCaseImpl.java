@@ -65,7 +65,7 @@ public class RefreshTokenUseCaseImpl implements RefreshTokenUseCase {
         User user = userOptional.get();
 
         // Generate new access token
-        String newAccessToken = jwtTokenProvider.generateToken(user.getUsername(), user.getRole().name());
+        String newAccessToken = jwtTokenProvider.generateToken(user.getId(), user.getUsername(), user.getRole().name());
 
         // Return response with new access token and same refresh token
         return new AuthResponse(newAccessToken, requestRefreshToken, user.getUsername(), user.getRole().name());
