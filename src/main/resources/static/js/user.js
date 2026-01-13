@@ -83,9 +83,13 @@ function createTask() {
 
 function toggleTask(id, currentStatus) {
     const task = allTasks.find(t => t.id === id);
+    if (!task) return;
+
     request(`/api/tasks/${id}`, "PUT", {
-        ...task,
-        completed: !currentStatus
+        title: task.title,
+        description: task.description,
+        completed: !currentStatus,
+        creationDate: task.creationDate // Keep the date as received
     })
         .then(() => loadTasks())
         .catch(err => alert("Error updating task: " + err.message));
@@ -101,6 +105,8 @@ function deleteTask(id) {
 
 function editTask(id) {
     const task = allTasks.find(t => t.id === id);
+    if (!task) return;
+
     const newTitle = prompt("New title:", task.title);
     if (newTitle === null) return;
 
@@ -108,9 +114,10 @@ function editTask(id) {
     if (newDesc === null) return;
 
     request(`/api/tasks/${id}`, "PUT", {
-        ...task,
         title: newTitle,
-        description: newDesc
+        description: newDesc,
+        completed: task.completed,
+        creationDate: task.creationDate
     })
         .then(() => loadTasks())
         .catch(err => alert("Error updating task: " + err.message));

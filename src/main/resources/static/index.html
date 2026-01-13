@@ -1,23 +1,55 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Tasks App</title>
+    <title>Tasks App - Simple & Secure</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
 
-<nav>
-    <h1>Tasks App</h1>
-    <div>
-        <a href="/login.html">Login</a>
-        <a href="/register.html" class="btn">Register</a>
-    </div>
-</nav>
+    <nav>
+        <div class="nav-container">
+            <h1>Tasks App</h1>
+            <div>
+                <a href="/login.html" class="btn" style="color: white; margin-right: 1rem;">Login</a>
+                <a href="/register.html" class="btn btn-white">Register</a>
+            </div>
+        </div>
+    </nav>
 
-<section class="hero">
-    <h2>Organiza tus tareas de forma simple</h2>
-    <p>Una aplicación segura basada en arquitectura hexagonal.</p>
-</section>
+    <header class="hero">
+        <h2>Organize your work,<br>simplify your life.</h2>
+        <p>A secure, robust task management application built with Hexagonal Architecture and Spring Boot.</p>
+        <a href="/register.html" class="btn btn-white btn-lg">Get Started Free</a>
+    </header>
+
+    <section class="features">
+        <div class="feature-card">
+            <span class="feature-icon">🛡️</span>
+            <h3>Secure by Design</h3>
+            <p>Built with enterprise-grade security practices including JWT authentication and role-based access
+                control.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <h3>Hexagonal Core</h3>
+            <p>A clean architecture that separates domain logic from infrastructure, ensuring long-term maintainability.
+            </p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">👥</span>
+            <h3>Admin Controls</h3>
+            <p>Comprehensive user management tools for administrators to oversee the platform effectively.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Tasks App. Created with Spring Boot & Love.</p>
+    </footer>
 
 </body>
+
 </html>
