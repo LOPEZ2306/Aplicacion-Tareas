@@ -56,7 +56,7 @@ public class AuthenticateUserUseCaseImpl implements AuthenticateUserUseCase {
         refreshTokenRepositoryPort.deleteByUsername(user.getUsername());
 
         // Generate JWT access token
-        String accessToken = jwtTokenProvider.generateToken(user.getUsername(), user.getRole().name());
+        String accessToken = jwtTokenProvider.generateToken(user.getId(), user.getUsername(), user.getRole().name());
 
         // Generate refresh token
         String refreshTokenString = jwtTokenProvider.generateRefreshToken(user.getUsername());

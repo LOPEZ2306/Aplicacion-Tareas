@@ -38,12 +38,26 @@ public class JwtTokenProvider {
     }
 
     /**
-     * Generate JWT token for a username with role
+     * Generate JWT token for a user with id, username and role
      */
-    public String generateToken(String username, String role) {
+    public String generateToken(Long userId, String username, String role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
         claims.put("role", role);
         return createToken(claims, username);
+    }
+
+    /**
+     * Extract userId from token
+     */
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> {
+            Object userId = claims.get("userId");
+            if (userId instanceof Number) {
+                return ((Number) userId).longValue();
+            }
+            return null;
+        });
     }
 
     /**

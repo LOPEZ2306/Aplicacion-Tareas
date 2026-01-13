@@ -38,17 +38,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwt != null && jwtTokenProvider.validateToken(jwt)) {
                 String username = jwtTokenProvider.extractUsername(jwt);
                 String role = jwtTokenProvider.extractRole(jwt);
+                Long userId = jwtTokenProvider.extractUserId(jwt);
 
-                // Create authentication token with role
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        username,
-                        null,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    // Create authentication token with username as principal, userId as credentials
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            username,
+                            userId,
+                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // Set authentication in security context
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    // Set authentication in security context
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    logger.debug("Authenticated user: " + username + " with ID: " + userId);
+                }
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
